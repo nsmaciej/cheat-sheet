@@ -1,13 +1,22 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Route, BrowserRouter } from 'react-router-dom'
+import styled from 'styled-components'
 
 import { Home } from './home'
 import { Results } from './results'
+import kLogoPath from './logo.png'
+
+const Logo = styled.img`
+    height: 1em;
+`
 
 const App = () => {
     return <React.Fragment>
-        <h1>Cool Name</h1>
+        <h1>
+            <Logo src={kLogoPath} />
+            Cheat Sheets
+            </h1>
         <BrowserRouter>
             <>
                 <Route exact path="/" render={() => <Home />} />

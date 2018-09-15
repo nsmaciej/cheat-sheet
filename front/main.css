@@ -1,8 +1,100 @@
+:root {
+    --focus-color: #1b6bec;
+    --page-background-color: #ffffff;
+    --alternate-background-color: #f4f4f4;
+    --placeholder-text-color: #dedede;
+    --secondary-color: #bdbdbd;
+    --bold-color: #000000;
+}
+
 * {
     padding: 0;
     margin: 0;
+    box-sizing: border-box !important;
+}
+
+h1 {
+    font-size: 3em;
+    font-weight: bolder;
+    line-height: 1.3;
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
+    padding: 20px;
+     font-family: 'Roboto', sans-serif;
+     color: #444444;
+     background: var(--page-background-color);
+}
+
+/* Standard button */
+button, .button {
+    --button-disabled-color: #87a4f3;
+    --button-minor-color: #1d70f5;
+    --button-major-color: #5294ff;
+    background: var(--button-major-color);
+    transition: background-color var(--button-transition-time), color var(--button-transition-time);
+    border: none;
+    border-radius: var(--standard-border-radius);
+    min-width: 12ch;
+    padding: 0 20px;
+    color: var(--page-background-color);
+    letter-spacing: 0.15ex;
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: bold;
+    line-height: 1;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    height: 1.9rem;
+    line-height: 1.9rem;
+    /* For links */
+    display: inline-block;
+    vertical-align: middle;
+    text-decoration: none;
+    cursor: default;
+}
+
+button + button, .button + .button, .button + button, button + .button {
+    margin-left: var(--button-spacing);
+}
+button:disabled {
+    background: var(--button-disabled-color) !important;
+    color: var(--page-background-color) !important;
+}
+header button, header .button, button.subtle, header .button {
+    background: var(--page-background-color);
+    color: var(--button-minor-color);
+}
+header button:disabled, button.subtle:disabled {
+    background: var(--page-background-color) !important;
+    color: var(--button-disabled-color) !important;
+}
+
+/* Hover, active and focus states */
+button:active, button:hover, .button:active, .button:hover {
+    color: var(--page-background-color);
+}
+button:hover, .button:hover {
+    background: var(--button-minor-color);
+}
+header button:hover, header .button:hover, button.subtle:hover, .button.subtle:hover {
+    background: var(--button-major-color);
+}
+button:active, .button:active {
+    background: var(--focus-color) !important;
+}
+button:focus, .button:focus {
+    outline: none;
+    box-shadow: 0 0 0 1px currentColor;
+}
+
+input:not([type]), input[type='text'] {
+    font: inherit;
+    border: 1px solid ;
+    border-radius: 5px;
+    padding: 1px 5px 0;
+    margin: 0 8px;
+    color: inherit;
+    line-height: inherit;
+    /* border-bottom: 1px solid var(--secondary-color); */
+    width: 200px;
 }
