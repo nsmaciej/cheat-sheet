@@ -20,7 +20,7 @@ const App = () => {
         <BrowserRouter>
             <>
                 <Route exact path="/" render={() => <Home />} />
-                <Route path="/q" render={() => <Results />} />
+                <Route path="/search/:user/:repo" render={({ match }) => match.params.user + "/" + match.params.repo} />
             </>
         </BrowserRouter>
     </React.Fragment>
