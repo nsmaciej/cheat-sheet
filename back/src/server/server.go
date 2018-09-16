@@ -31,11 +31,12 @@ func respond(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Write(val)
 }
 
 func getFiles(repo string) ([]byte, error) {
-	extToFunc := map[string]func(io.Reader, string, string) (*goparse.File, error) {
+	extToFunc := map[string]func(io.Reader, string, string) (*goparse.File, error){
 		".go": goparse.ParseFile,
 		".py": pythonToGo,
 	}
