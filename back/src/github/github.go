@@ -51,7 +51,7 @@ func GetLinks(githubRepo string, client *github.Client, extensions []string) ([]
 						links = append(links, Resource{
 							DownloadURL: *file.DownloadURL,
 							Filename:    *file.Path,
-							GithubURL:   *file.GitURL,
+							GithubURL:   *file.HTMLURL,
 						})
 						if len(links) >= fileCap {
 							return nil

@@ -1,6 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { withRouter } from 'react-router';
+import kGithubPath from './github.png'
 
 const HomeContainer = styled.div`
 display: flex;
@@ -31,6 +32,11 @@ const LinkBox = styled.div`
     padding-top: 10px;
 `
 
+const InlineImage = styled.img`
+    height: 0.7em;
+    opacity: 0.8;
+`
+
 const kThingsToTry = [
     "facebookincubator/fbender",
     "eoindavey/demogolibrary",
@@ -54,7 +60,9 @@ export class Home extends React.Component {
             <SearchButton search={this.state.search} />
             <SmallHeading>Things to try!</SmallHeading>
             <LinkBox>
-                {kThingsToTry.map(x => <a href={`http://localhost:1234/search/${x}`} key={x}>{x}</a>)}
+                {kThingsToTry.map(x => <div>
+                    <InlineImage src={kGithubPath} /> <a href={`http://localhost:1234/search/${x}`} key={x}>{x}</a>
+                </div>)}
             </LinkBox>
         </HomeContainer>
     }

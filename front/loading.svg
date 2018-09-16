@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="219px" height="268px" viewBox="0 0 219 268" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.1 (51147) - http://www.bohemiancoding.com/sketch -->
+    <title>Artboard 3</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Artboard-3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polyline id="left" stroke="#FFEC30" stroke-width="17" points="13 75 13 100.013055 89 187.172002 89 263"></polyline>
+        <polyline id="right" stroke="#FFEC30" stroke-width="17" points="121 262 121 186.112216 204 102.598013 204 78"></polyline>
+        <text id="code" transform="translate(102.500000, 64.500000) rotate(-40.000000) translate(-102.500000, -64.500000) " font-family="SFProDisplay-Bold, SF Pro Display" font-size="140" font-weight="bold" fill="#FFAB20">
+            <tspan x="35" y="114">{ }</tspan>
+        </text>
+    </g>
+</svg>

@@ -26,6 +26,7 @@ footer {
     margin-top: 50px;
     text-align: center;
     font-style: italic;
+    color: #969696;
 }
 
 h2 {
@@ -127,4 +128,23 @@ input:not([type]), input[type='text'] {
 input:not([type]):focus, input[type='text']:focus {
     outline: 0;
     border: 1px solid var(--focus-color);
+}
+
+@keyframes loading {
+    0% {
+        transform: translateY(0);
+        opacity: 0;
+    }
+    60% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(30px) scale(0.5);
+        opacity: 0;
+    }
+}
+
+#code {
+    transform-origin: center;
+    animation: 1.3s ease-in loading infinite;
 }
