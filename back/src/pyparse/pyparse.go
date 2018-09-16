@@ -7,7 +7,7 @@ import (
 )
 
 func ParsePython(read io.Reader, url, file string) ([]byte, error) {
-	cmd := exec.Command("./py.py", url, file)
+	cmd := exec.Command("./funcAst.py", url, file)
 	cmd.Stdin = read
 	var out bytes.Buffer
 	cmd.Stdout = &out
