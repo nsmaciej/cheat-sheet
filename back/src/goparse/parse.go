@@ -63,7 +63,9 @@ func parseFunc(f *ast.FuncDecl) *Function {
 	}
 	if f.Type.Results != nil {
 		for _, r := range f.Type.Results.List {
-			fnc.Returns = append(fnc.Returns, (r.Type.(*ast.Ident)).Name)
+            if t, ok := r.Type.(*ast.Ident); ok {
+                fnc.Returns = append(fnc.Returns, t.Name)
+            }
 		}
 	}
 	return fnc
@@ -124,7 +126,9 @@ func parseStruct(v *ast.StructType) *strct {
 	s := &strct{}
 	for _, f := range v.Fields.List {
 		va := Val{}
-		va.Name = f.Names[0].Name
+        if len(f.Names) > 0 {
+            va.Name = f.Names[0].Name
+        }
 		switch d := f.Type.(type) {
 		case *ast.StructType:
 			va.nested = parseStruct(d)
