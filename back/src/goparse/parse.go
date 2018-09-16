@@ -12,6 +12,7 @@ type File struct {
 	URL           string
 	ExportedFuncs []*Function
 	ExportedTypes []*TypeStmt
+    ExportedMethods map[string][]*Function
 }
 
 type Param struct {
@@ -23,6 +24,7 @@ type Function struct {
 	Name    string
 	Params  []Param
 	Returns []string
+    ClassName string
 }
 
 type TypeStmt struct {
@@ -37,11 +39,16 @@ func ParseFile(read io.Reader, url string, filename string) (*File, error) {
 		return nil, err
 	}
 	ast.FileExports(f)
-	file := &File{Filename: filename, URL: url}
+    file := &File{Filename: filename, URL: url, ExportedMethods: make(map[string][]*Function)}
 	for _, decl := range f.Decls {
 		switch d := decl.(type) {
 		case *ast.FuncDecl:
-			file.ExportedFuncs = append(file.ExportedFuncs, parseFunc(d))
+            pF := parseFunc(d)
+            if pF.ClassName != "" {
+                file.ExportedMethods[pF.ClassName] = append(file.ExportedMethods[pF.ClassName], pF)
+            } else {
+                file.ExportedFuncs = append(file.ExportedFuncs, pF)
+            }
 		case *ast.GenDecl:
 			if v := parseTypeStmt(d); v != nil {
 				file.ExportedTypes = append(file.ExportedTypes, v)
@@ -74,6 +81,9 @@ func parseFunc(f *ast.FuncDecl) *Function {
 		parm.Type = parseType(p.Type)
 		fnc.Params = append(fnc.Params, parm)
 	}
+    if f.Recv != nil {
+        fnc.ClassName = parseType(f.Recv.List[0].Type)
+    }
 	if f.Type.Results != nil {
 		for _, r := range f.Type.Results.List {
 			fnc.Returns = append(fnc.Returns, parseType(r.Type))

@@ -10,6 +10,8 @@ type ExportedStruct struct {
 	}
 }
 
+type Alias = int32
+
 /*
 [
     {
@@ -31,6 +33,9 @@ type ExportedStruct struct {
 */
 
 type ExportedType int
+
+func (e *ExportedType) Received() {
+}
 
 func ExportedFunction(int1 int, int2 int, str1 string) (int32, int64) {
 }
