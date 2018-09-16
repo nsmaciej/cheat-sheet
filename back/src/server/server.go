@@ -54,9 +54,10 @@ func getFiles(repo string) ([]byte, error) {
 		}
 		ext := path.Ext(link.DownloadURL)
 		file, err := extToFunc[ext](resp.Body, link.GithubURL, link.Filename)
-		if err == nil {
-			ft2f[ext] = append(ft2f[ext], file)
+		if err != nil {
+            return nil, err
 		}
+        ft2f[ext] = append(ft2f[ext], file)
 	}
 	return json.Marshal(ft2f)
 }
