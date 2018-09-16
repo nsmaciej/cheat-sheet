@@ -2,7 +2,6 @@ package goparse
 
 import (
 	"encoding/json"
-	"fmt"
 	"go/ast"
 	"go/parser"
 	"go/token"
@@ -23,7 +22,6 @@ func ParseFile(filename string, read io.Reader) (*File, error) {
 	}
 	ast.FileExports(f)
 	file := &File{Filename: filename}
-	ast.Print(fset, f)
 	for _, decl := range f.Decls {
 		switch d := decl.(type) {
 		case *ast.FuncDecl:
@@ -61,7 +59,7 @@ func parseFunc(f *ast.FuncDecl) *Function {
 type Val struct {
 	Name     string
 	topLevel string
-	nested   *TypeStmt
+	nested   *strct
 }
 
 type strct struct {
@@ -114,7 +112,12 @@ func parseStruct(v *ast.StructType) *strct {
 	for _, f := range v.Fields.List {
 		va := Val{}
 		va.Name = f.Names[0].Name
-		// parse expr
+		switch d := f.Type.(type) {
+		case *ast.StructType:
+			va.nested = parseStruct(d)
+		case *ast.Ident:
+			va.topLevel = d.Name
+		}
 		s.Fields = append(s.Fields, va)
 	}
 	return s
