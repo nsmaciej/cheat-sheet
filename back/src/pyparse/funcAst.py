@@ -21,6 +21,7 @@ def topLevel(tree, fileName):
 
 # FuncLister().visit(tree)
 
+url = input()
 Filename = input()
 s = ''
 for line in fileinput.input():
