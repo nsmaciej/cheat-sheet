@@ -11,6 +11,7 @@ class FuncLister(ast.NodeVisitor):
 
 def topLevel(tree, Url, Filename):
 	funcs = []
+	classes = []
 	for node in tree.body:
 		args = []
 		if isinstance(node, ast.FunctionDef):
@@ -18,7 +19,9 @@ def topLevel(tree, Url, Filename):
 			for arg in node.args.args:
 				args.append({'Name':arg.arg, 'Type':None})
 				funcs.append({'Name':node.name, 'Params':args})
-	print(json.dumps({'Url':Url, 'Filename':Filename, 'ExportedFuncs':funcs, 'ExportedTypes':None}, indent=4))
+		elif isinstance(node, ast.ClassDef):
+			classes.append({'Name':node.name, 'TypeStr':None})
+	print(json.dumps({'Url':Url, 'Filename':Filename, 'ExportedFuncs':funcs, 'ExportedTypes':classes}, indent=4))
 
 # FuncLister().visit(tree)
 
