@@ -15,6 +15,9 @@ type Client *github.Client
 // GetLinks gets links.
 func GetLinks(githubRepo string, client *github.Client, extensions []string) ([]string, error) {
 	s := strings.Split(githubRepo, "/")
+	if len(s) < 2 {
+		return nil, fmt.Errorf("Invalid repo name")
+	}
 	user, repo := s[0], s[1]
 
 	var links []string
