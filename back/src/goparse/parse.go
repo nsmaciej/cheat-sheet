@@ -103,6 +103,8 @@ func parseType(t ast.Expr) string {
 		}
 		a += "}"
 		return a
+    case *ast.SelectorExpr:
+        return parseType(v.X) + "." + v.Sel.Name
 	default:
 		return ""
 	}
