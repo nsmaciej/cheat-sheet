@@ -17,6 +17,16 @@ h1 {
     font-size: 3em;
     font-weight: bolder;
     line-height: 1.3;
+    color: var(--bold-color);
+    margin-bottom: 50px;
+}
+
+footer {
+    margin-top: 50px;
+}
+
+h2 {
+    font-size: 2em;
 }
 
 body {
