@@ -5,8 +5,11 @@ import (
 	"fmt"
 	"github"
 	"goparse"
+	"io"
 	"net/http"
 	"os"
+	"path"
+	"pyparse"
 )
 
 var ghc github.Client
@@ -21,30 +24,6 @@ func main() {
 	}
 }
 
-func getFiles(repo string) ([]byte, error) {
-	links, err := github.GetLinks(repo, ghc, []string{".go"})
-	if err != nil {
-		return nil, err
-	}
-	files := make([]*goparse.File, len(links))
-	for i, link := range links {
-		resp, err := http.Get(link)
-		if err != nil {
-			return nil, err
-		}
-		if resp.StatusCode != 200 {
-			return nil, fmt.Errorf("Bad status")
-		}
-		file, err := goparse.ParseFile(link, resp.Body)
-		if err != nil {
-			return nil, err
-		}
-		files[i] = file
-	}
-
-	return json.Marshal(files)
-}
-
 func respond(w http.ResponseWriter, req *http.Request) {
 	repo := req.URL.Query().Get("repo")
 	val, err := getFiles(repo)
@@ -53,5 +32,44 @@ func respond(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 	w.Write(val)
-	getFiles(repo)
+}
+
+func getFiles(repo string) ([]byte, error) {
+	extToFunc := map[string]func(io.Reader, string, string) (*goparse.File, error) {
+		".go": goparse.ParseFile,
+		".py": pythonToGo,
+	}
+	links, err := github.GetLinks(repo, ghc, []string{".go", ".py"})
+	if err != nil {
+		return nil, err
+	}
+	ft2f := make(map[string][]*goparse.File)
+	for _, link := range links {
+		resp, err := http.Get(link.DownloadURL)
+		if err != nil {
+			return nil, err
+		}
+		if resp.StatusCode != 200 {
+			return nil, fmt.Errorf("Bad status")
+		}
+		ext := path.Ext(link.DownloadURL)
+		file, err := extToFunc[ext](resp.Body, link.GithubURL, link.Filename)
+		if err == nil {
+			ft2f[ext] = append(ft2f[ext], file)
+		}
+	}
+	return json.Marshal(ft2f)
+}
+
+func pythonToGo(read io.Reader, url, file string) (*goparse.File, error) {
+	f := &goparse.File{}
+	bytes, err := pyparse.ParsePython(read, url, file)
+	if err != nil {
+		return nil, err
+	}
+	err = json.Unmarshal(bytes, f)
+	if err != nil {
+		return nil, err
+	}
+	return f, nil
 }

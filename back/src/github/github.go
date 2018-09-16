@@ -9,18 +9,25 @@ import (
 	"golang.org/x/oauth2"
 )
 
+// Resource is a resource.
+type Resource struct {
+	DownloadURL string
+	GithubURL   string
+	Filename    string
+}
+
 // Client is the client.
 type Client *github.Client
 
 // GetLinks gets links.
-func GetLinks(githubRepo string, client *github.Client, extensions []string) ([]string, error) {
+func GetLinks(githubRepo string, client *github.Client, extensions []string) ([]Resource, error) {
 	s := strings.Split(githubRepo, "/")
 	if len(s) < 2 {
 		return nil, fmt.Errorf("Invalid repo name")
 	}
 	user, repo := s[0], s[1]
 
-	var links []string
+	var links []Resource
 	var recurse func(*string) error
 	recurse = func(path *string) error {
 		_, dc, _, err := client.Repositories.GetContents(context.Background(), user, repo, *path, nil)
@@ -35,7 +42,10 @@ func GetLinks(githubRepo string, client *github.Client, extensions []string) ([]
 			if *file.Type == "file" {
 				for _, ext := range extensions {
 					if strings.HasSuffix(*file.Path, ext) {
-						links = append(links, *file.DownloadURL)
+						links = append(links, Resource{
+							DownloadURL: *file.DownloadURL,
+							Filename:    *file.Path,
+							GithubURL:   *file.GitURL})
 						break
 					}
 				}

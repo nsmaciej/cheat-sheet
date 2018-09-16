@@ -10,18 +10,19 @@ import (
 
 type File struct {
 	Filename      string
+	URL           string
 	ExportedFuncs []*Function
 	ExportedTypes []*TypeStmt
 }
 
-func ParseFile(filename string, read io.Reader) (*File, error) {
+func ParseFile(read io.Reader, url string, filename string) (*File, error) {
 	fset := token.NewFileSet()
 	f, err := parser.ParseFile(fset, filename, read, parser.AllErrors)
 	if err != nil {
 		return nil, err
 	}
 	ast.FileExports(f)
-	file := &File{Filename: filename}
+	file := &File{Filename: filename, URL: url}
 	for _, decl := range f.Decls {
 		switch d := decl.(type) {
 		case *ast.FuncDecl:
@@ -36,8 +37,8 @@ func ParseFile(filename string, read io.Reader) (*File, error) {
 }
 
 type Param struct {
-    Name string
-    Type string
+	Name string
+	Type string
 }
 
 type Function struct {
@@ -51,13 +52,13 @@ func parseFunc(f *ast.FuncDecl) *Function {
 		Name: f.Name.Name,
 	}
 	for _, p := range f.Type.Params.List {
-        parm := Param{}
-        if len(p.Names) > 0 {
-            parm.Name = p.Names[0].Name
-        }
-        if n, ok := p.Type.(*ast.Ident); ok {
-            parm.Type = n.Name
-        }
+		parm := Param{}
+		if len(p.Names) > 0 {
+			parm.Name = p.Names[0].Name
+		}
+		if n, ok := p.Type.(*ast.Ident); ok {
+			parm.Type = n.Name
+		}
 		fnc.Params = append(fnc.Params, parm)
 	}
 	if f.Type.Results != nil {
