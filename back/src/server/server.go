@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-    "goparse"
 )
 
 func main() {
@@ -16,18 +15,18 @@ func main() {
 }
 
 func Respond(w http.ResponseWriter, req *http.Request) {
-    path, ok := r.URL.Query()["path"]
-    if !ok {
-        http.Error(w, "no path provided", http.StatusBadRequest)
-        return
-    }
-    resp, err := http.Get(path)
+	path, ok := req.URL.Query()["path"]
+	if !ok {
+		http.Error(w, "no path provided", http.StatusBadRequest)
+		return
+	}
+	resp, err := http.Get(path[0])
     if err != nil {
-        http.Error(w, "could not get path", http.StatusInternalServerError)
-        return
-    }
-    if resp.StatusCode != http.StatusOK {
-        http.Error(w, "could not get path", http.StatusInternalServerError)
-        return
-    }
+		http.Error(w, "could not get path", http.StatusInternalServerError)
+		return
+	}
+	if resp.StatusCode != http.StatusOK {
+		http.Error(w, "could not get path", http.StatusInternalServerError)
+		return
+	}
 }
