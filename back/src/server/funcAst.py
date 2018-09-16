@@ -13,12 +13,11 @@ def topLevel(tree, Url, Filename):
 	funcs = []
 	classes = []
 	for node in tree.body:
-		args = []
 		if isinstance(node, ast.FunctionDef):
 			args = []
 			for arg in node.args.args:
 				args.append({'Name':arg.arg, 'Type':None})
-				funcs.append({'Name':node.name, 'Params':args})
+			funcs.append({'Name':node.name, 'Params':args})
 		elif isinstance(node, ast.ClassDef):
 			classes.append({'Name':node.name, 'TypeStr':None})
 	print(json.dumps({'Url':Url, 'Filename':Filename, 'ExportedFuncs':funcs, 'ExportedTypes':classes}, indent=4))
