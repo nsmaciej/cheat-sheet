@@ -15,7 +15,7 @@ type File struct {
 	ExportedTypes []*TypeStmt
 }
 
-func ParseFile(filename string, url string, read io.Reader) (*File, error) {
+func ParseFile(read io.Reader, url string, filename string) (*File, error) {
 	fset := token.NewFileSet()
 	f, err := parser.ParseFile(fset, filename, read, parser.AllErrors)
 	if err != nil {
