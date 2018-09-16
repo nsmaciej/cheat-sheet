@@ -30,7 +30,7 @@ const FileContainer = styled.div`
 const FileName = styled.div`
     margin-top: 10px;
     color: white;
-    background: red;
+    background: ${(props: { background: string }) => props.background};
     font-weight: bolder;
     padding: 6px;
     font-family: 'Roboto Mono', monospace;
@@ -84,25 +84,29 @@ export class Results extends React.Component<{ repo: string }, { results: any }>
         return files.map(file => {
             if (!file.ExportedFuncs || file.ExportedFuncs.length == 0) return null;
             return <FileContainer>
-                <FileName><a href={file.URL}>{file.Filename}</a></FileName>
+                <FileName background="#ff0000"><a href={file.URL}>{file.Filename}</a></FileName>
                 {this.renderFunctions(file.ExportedFuncs)}
+                {this.renderMethods(file.ExportedMethods)}
             </FileContainer>
         })
     }
 
-    renderParams(params) {
-        if (!params) return "";
-        return params.map((x, i) => (
-            <React.Fragment>
-                {x.Type
-                    ? <>{x.Name.trim()} <b>{x.Type.trim()}</b>{i == params.length - 1 ? "" : ", "}</>
-                    : <>{x.Name.trim()}{i == params.length - 1 ? "" : ", "}</>
-                }
-            </React.Fragment>
-        ));
+    renderMethods(methods) {
+        if (!methods) return null;
+        return <>
+            <FileContainer>
+                {Object.keys(methods).map(obj => {
+                    return <>
+                        <FileName background="#fc8a8a" key={obj}>{obj}</FileName>
+                        {this.renderFunctions(methods[obj])}
+                    </>
+                })}
+            </FileContainer>
+        </>
     }
 
     renderFunctions(fns_raw) {
+        //TODO: Remove
         if (!fns_raw) return null;
         let seen = new Set();
         let fns = [];
@@ -118,6 +122,18 @@ export class Results extends React.Component<{ repo: string }, { results: any }>
                 })}
             </GridContainer>
         </>
+    }
+
+    renderParams(params) {
+        if (!params) return "";
+        return params.map((x, i) => (
+            <React.Fragment>
+                {x.Type
+                    ? <>{x.Name.trim()} <b>{x.Type.trim()}</b>{i == params.length - 1 ? "" : ", "}</>
+                    : <>{x.Name.trim()}{i == params.length - 1 ? "" : ", "}</>
+                }
+            </React.Fragment>
+        ));
     }
 
     exportAsPdf() {

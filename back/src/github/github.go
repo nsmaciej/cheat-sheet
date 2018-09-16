@@ -30,7 +30,7 @@ func GetLinks(githubRepo string, client *github.Client, extensions []string) ([]
 	var links []Resource
 	var recurse func(int, *string) error
 
-	const fileCap = 20
+	const fileCap = 40
 
 	recurse = func(depth int, path *string) error {
 		if depth > 2 {

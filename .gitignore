@@ -1,3 +1,4 @@
 back/src/server/server
 back/src/test_parse
 .DS_Store
+.vscode
