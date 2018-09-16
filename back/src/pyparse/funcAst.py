@@ -1,7 +1,5 @@
 import ast, json, fileinput
 
-infile = 'program.py'
-
 class FuncLister(ast.NodeVisitor):
 	def visit_FunctionDef(self, node):
 		args = []
@@ -10,25 +8,23 @@ class FuncLister(ast.NodeVisitor):
 		print(json.dumps({'Name':node.name, 'Params':args}, indent=4))
 		self.generic_visit(node) # guarantee child nodes visited
 
-def topLevel(tree):
+def topLevel(tree, fileName):
 	funcs = []
 	for node in tree.body:
 		args = []
 		if isinstance(node, ast.FunctionDef):
 			args = []
 			for arg in node.args.args:
-				args.append(arg.arg)
+				args.append({'Name':arg.arg, 'Type':None})
 				funcs.append({'Name':node.name, 'Params':args})
-	print(json.dumps(funcs))
+	print(json.dumps({'Filename':Filename, 'ExportedFuncs':funcs}, indent=4))
 
-# with open(infile) as f:
-# 	tree = ast.parse(f.read())
-# 
 # FuncLister().visit(tree)
 
+Filename = input()
 s = ''
 for line in fileinput.input():
 	s += line
 
 tree = ast.parse(s)
-topLevel(tree)
+topLevel(tree, Filename)
