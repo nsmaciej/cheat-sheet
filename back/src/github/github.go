@@ -30,7 +30,7 @@ func GetLinks(githubRepo string, client *github.Client, extensions []string) ([]
 	var links []Resource
 	var recurse func(*string) error
 
-    const fileCap = 15
+    const fileCap = 20
     escape := false
 
 	recurse = func(path *string) error {
@@ -56,8 +56,9 @@ func GetLinks(githubRepo string, client *github.Client, extensions []string) ([]
                         })
                         if len(links) >= fileCap {
                             escape = true
+                            return nil
                         }
-                        return nil
+                        break
 					}
 				}
 			} else if *file.Type == "dir" {
