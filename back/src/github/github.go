@@ -29,7 +29,14 @@ func GetLinks(githubRepo string, client *github.Client, extensions []string) ([]
 
 	var links []Resource
 	var recurse func(*string) error
+
+    const fileCap = 15
+    escape := false
+
 	recurse = func(path *string) error {
+        if escape {
+            return nil
+        }
 		_, dc, _, err := client.Repositories.GetContents(context.Background(), user, repo, *path, nil)
 		if err != nil {
 			return err
@@ -45,8 +52,12 @@ func GetLinks(githubRepo string, client *github.Client, extensions []string) ([]
 						links = append(links, Resource{
 							DownloadURL: *file.DownloadURL,
 							Filename:    *file.Path,
-							GithubURL:   *file.GitURL})
-						break
+							GithubURL:   *file.GitURL,
+                        })
+                        if len(links) >= fileCap {
+                            escape = true
+                        }
+                        return nil
 					}
 				}
 			} else if *file.Type == "dir" {
