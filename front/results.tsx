@@ -15,6 +15,8 @@ const kSvg = `
     </g>
 </svg>`
 
+const kRedShade = "#fdaeae;"
+
 const GridContainer = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -37,6 +39,15 @@ const FileName = styled.div`
     font-weight: bolder;
     padding: 6px;
     font-family: 'Roboto Mono', monospace;
+`
+
+const SubFileName = styled.div`
+    margin-top: 10px;
+    font-weight: bolder;
+    padding: 6px 0;
+    /* font-size: 1.2rem; */
+    font-family: 'Roboto Mono', monospace;
+    color: black;
 `
 
 const FunctionName = styled.div`
@@ -94,9 +105,17 @@ export class Results extends React.Component<{ repo: string }, { results: any }>
         return files.map(file => {
             if (!file.ExportedFuncs || file.ExportedFuncs.length == 0) return null;
             return <FileContainer>
-                <FileName background="#ff0000"><a href={file.URL}>{file.Filename}</a></FileName>
+                <FileName background="red"><a href={file.URL}>{file.Filename}</a></FileName>
                 {this.renderFunctions(file.ExportedFuncs)}
                 {this.renderMethods(file.ExportedMethods)}
+                {
+                    !file.ExportedTypes ? null : <>
+                        <SubFileName>Types</SubFileName>
+                        <GridContainer>
+                            {file.ExportedTypes.map(x => <FunctionName>{x.Name}</FunctionName>)}
+                        </GridContainer>
+                    </>
+                }
             </FileContainer>
         })
     }
@@ -107,7 +126,7 @@ export class Results extends React.Component<{ repo: string }, { results: any }>
             <FileContainer>
                 {Object.keys(methods).map(obj => {
                     return <>
-                        <FileName background="#fc8a8a" key={obj}>{obj}</FileName>
+                        <SubFileName key={obj}>{obj}</SubFileName>
                         {this.renderFunctions(methods[obj])}
                     </>
                 })}
