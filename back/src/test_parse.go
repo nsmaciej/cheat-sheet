@@ -13,13 +13,13 @@ func main() {
 		return
 	}
 	for _, f := range os.Args[1:] {
-        if f == "--" {
-            continue
-        }
-        file, err := os.Open(f)
-        if err != nil {
+		if f == "--" {
+			continue
+		}
+		file, err := os.Open(f)
+		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error opening file %s: %v", f, err)
-        }
+		}
 		f, err := goparse.ParseFile(f, file)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error parsing file %s: %v", f, err)
