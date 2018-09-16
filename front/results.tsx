@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const GridContainer = styled.div`
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
 `
 
 const RepoName = styled.h2`
@@ -28,6 +28,7 @@ const FunctionName = styled.div`
     padding: 7px 0 0;
     min-width: 0; /* For long names */
     overflow: hidden;
+    font-size: 0.9rem;
     text-overflow: ellipsis;
 `
 
@@ -44,7 +45,7 @@ export class Results extends React.Component<{ repo: string }, { results: any }>
 
     render() {
         return <>
-            <button onClick={() => window.print()}>Print</button>
+            <button className="noprint" onClick={() => window.print()}>Print</button>
             <a href={`https://github.com/${this.props.repo}`}><RepoName>{this.props.repo}</RepoName></a>
             {Object.keys(this.state.results).map(lang => {
                 return <div key={lang}>
@@ -52,11 +53,6 @@ export class Results extends React.Component<{ repo: string }, { results: any }>
                     {this.renderLanguage(this.state.results[lang])}
                 </div>
             })}
-            <h3>.js files</h3>
-            <p>No results</p>
-            <br />
-            <h3>.rb files</h3>
-            <p>No results</p>
         </>
     }
 
@@ -71,11 +67,32 @@ export class Results extends React.Component<{ repo: string }, { results: any }>
         })
     }
 
-    renderFunctions(fns) {
-        if (!fns) return null;
+    renderParams(params) {
+        if (!params) return "";
+        return params.map((x, i) => (
+            <React.Fragment>
+                {x.Type
+                    ? <>{x.Name.trim()} <b>{x.Type.trim()}</b>{i == params.length - 1 ? "" : ", "}</>
+                    : <>{x.Name.trim()}{i == params.length - 1 ? "" : ", "}</>
+                }
+            </React.Fragment>
+        ));
+    }
+
+    renderFunctions(fns_raw) {
+        if (!fns_raw) return null;
+        let seen = new Set();
+        let fns = [];
+        for (const fn of fns_raw) {
+            if (seen.has(fn.Name)) continue;
+            seen.add(fn.Name)
+            fns.push(fn)
+        }
         return <>
             <GridContainer>
-                {fns.map(fn => <FunctionName>{fn.Name}()</FunctionName>)}
+                {fns.map(fn => {
+                    return <FunctionName key={fn.Name}>{fn.Name}({this.renderParams(fn.Params)})</FunctionName>
+                })}
             </GridContainer>
         </>
     }

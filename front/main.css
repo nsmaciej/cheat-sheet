@@ -42,6 +42,13 @@ body {
      font-family: 'Roboto', sans-serif;
      color: #444444;
      background: var(--page-background-color);
+     -webkit-print-color-adjust: exact !important;
+}
+
+@media print {
+.noprint {
+    display: none;
+}
 }
 
 /* Standard button */
