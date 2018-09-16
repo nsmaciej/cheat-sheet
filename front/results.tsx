@@ -1,5 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components';
+import kGoIconPath from './gogo.png'
+import kPythonIconPath from './python.png'
 
 const kSvg = `
 <?xml version="1.0" encoding="UTF-8"?>
@@ -19,9 +21,10 @@ const GridContainer = styled.div`
 `
 
 const RepoName = styled.h2`
-    color: red;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    /* color: red; */
+    font-size: 3.5em;
+    margin: 0 20px 20px 0;
+    display: inline;
 `
 
 const FileContainer = styled.div`
@@ -48,6 +51,11 @@ const CneterAlign = styled.div`
     text-align: center;
 `
 
+const Damn = styled.button`
+    position: relative;
+    bottom: 12px;
+`
+
 const Loading = () => (
     <CneterAlign dangerouslySetInnerHTML={{ __html: kSvg }} />
 )
@@ -65,13 +73,15 @@ export class Results extends React.Component<{ repo: string }, { results: any }>
 
     render() {
         return <>
-            <button className="noprint" onClick={() => window.print()}>Print</button>
-            <a href={`https://github.com/${this.props.repo}`}><RepoName>{this.props.repo}</RepoName></a>
+            <div className="margin-bottom">
+                <a className="nounderline" href={`https://github.com/${this.props.repo}`}><RepoName>{this.props.repo}</RepoName></a>
+                <Damn className="noprint" onClick={() => window.print()}>Print</Damn>
+            </div>
             {!this.state.results
                 ? <Loading />
                 : Object.keys(this.state.results).map(lang => {
                     return <div key={lang}>
-                        <h3>{lang} files</h3>
+                        <img height="60" src={lang == ".py" ? kPythonIconPath : kGoIconPath} />
                         {this.renderLanguage(this.state.results[lang])}
                     </div>
                 })
@@ -105,16 +115,8 @@ export class Results extends React.Component<{ repo: string }, { results: any }>
         </>
     }
 
-    renderFunctions(fns_raw) {
-        //TODO: Remove
-        if (!fns_raw) return null;
-        let seen = new Set();
-        let fns = [];
-        for (const fn of fns_raw) {
-            if (seen.has(fn.Name)) continue;
-            seen.add(fn.Name)
-            fns.push(fn)
-        }
+    renderFunctions(fns) {
+        if (!fns) return null;
         return <>
             <GridContainer>
                 {fns.map(fn => {

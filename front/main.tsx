@@ -9,6 +9,7 @@ import kLogoPath from './logo.png'
 
 const Logo = styled.img`
     height: 1em;
+    margin-right: 8px;
 `
 
 const NoUnderline = styled.a`
@@ -24,10 +25,10 @@ const App = () => {
             </h1>
         </NoUnderline>
         <BrowserRouter>
-            <>
+            <div>
                 <Route exact path="/" render={() => <Home />} />
                 <Route path="/search/:user/:repo" render={({ match }) => <Results repo={match.params.user + "/" + match.params.repo} />} />
-            </>
+            </div>
         </BrowserRouter>
     </React.Fragment>
 }

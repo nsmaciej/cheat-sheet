@@ -39,7 +39,7 @@ a {
 }
 
 body {
-    padding: 20px;
+    margin: 40px 20px 0;
      font-family: 'Roboto', sans-serif;
      color: #444444;
      background: var(--page-background-color);
@@ -50,6 +50,18 @@ body {
 .noprint {
     display: none;
 }
+}
+
+.nounderline {
+    text-decoration: none;
+}
+
+.inline {
+    display: inline;
+}
+
+.margin-bottom {
+    margin-bottom: 30px;
 }
 
 /* Standard button */
