@@ -84,7 +84,7 @@
     83  .  .  .  .  .  .  .  .  1: *ast.Field {
     84  .  .  .  .  .  .  .  .  .  Names: []*ast.Ident (len = 1) {
     85  .  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
-    86  .  .  .  .  .  .  .  .  .  .  .  NamePos: test_file.go:8:5
+    86  .  .  .  .  .  .  .  .  .  .  .  NamePos: test_file.go:8:2
     87  .  .  .  .  .  .  .  .  .  .  .  Name: "Nested"
     88  .  .  .  .  .  .  .  .  .  .  .  Obj: *ast.Object {
     89  .  .  .  .  .  .  .  .  .  .  .  .  Kind: var
@@ -94,14 +94,14 @@
     93  .  .  .  .  .  .  .  .  .  .  }
     94  .  .  .  .  .  .  .  .  .  }
     95  .  .  .  .  .  .  .  .  .  Type: *ast.StructType {
-    96  .  .  .  .  .  .  .  .  .  .  Struct: test_file.go:8:12
+    96  .  .  .  .  .  .  .  .  .  .  Struct: test_file.go:8:16
     97  .  .  .  .  .  .  .  .  .  .  Fields: *ast.FieldList {
-    98  .  .  .  .  .  .  .  .  .  .  .  Opening: test_file.go:8:18
+    98  .  .  .  .  .  .  .  .  .  .  .  Opening: test_file.go:8:23
     99  .  .  .  .  .  .  .  .  .  .  .  List: []*ast.Field (len = 1) {
    100  .  .  .  .  .  .  .  .  .  .  .  .  0: *ast.Field {
    101  .  .  .  .  .  .  .  .  .  .  .  .  .  Names: []*ast.Ident (len = 1) {
    102  .  .  .  .  .  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
-   103  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: test_file.go:9:9
+   103  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: test_file.go:9:3
    104  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Name: "Export"
    105  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Obj: *ast.Object {
    106  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Kind: var
@@ -111,12 +111,12 @@
    110  .  .  .  .  .  .  .  .  .  .  .  .  .  .  }
    111  .  .  .  .  .  .  .  .  .  .  .  .  .  }
    112  .  .  .  .  .  .  .  .  .  .  .  .  .  Type: *ast.Ident {
-   113  .  .  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: test_file.go:9:16
+   113  .  .  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: test_file.go:9:10
    114  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Name: "int"
    115  .  .  .  .  .  .  .  .  .  .  .  .  .  }
    116  .  .  .  .  .  .  .  .  .  .  .  .  }
    117  .  .  .  .  .  .  .  .  .  .  .  }
-   118  .  .  .  .  .  .  .  .  .  .  .  Closing: test_file.go:10:5
+   118  .  .  .  .  .  .  .  .  .  .  .  Closing: test_file.go:10:2
    119  .  .  .  .  .  .  .  .  .  .  }
    120  .  .  .  .  .  .  .  .  .  .  Incomplete: false
    121  .  .  .  .  .  .  .  .  .  }
@@ -170,72 +170,105 @@
    169  .  .  .  .  .  Opening: test_file.go:35:22
    170  .  .  .  .  .  List: []*ast.Field (len = 3) {
    171  .  .  .  .  .  .  0: *ast.Field {
-   172  .  .  .  .  .  .  .  Type: *ast.Ident {
-   173  .  .  .  .  .  .  .  .  NamePos: test_file.go:35:23
-   174  .  .  .  .  .  .  .  .  Name: "int"
-   175  .  .  .  .  .  .  .  }
-   176  .  .  .  .  .  .  }
-   177  .  .  .  .  .  .  1: *ast.Field {
-   178  .  .  .  .  .  .  .  Type: *ast.Ident {
-   179  .  .  .  .  .  .  .  .  NamePos: test_file.go:35:28
-   180  .  .  .  .  .  .  .  .  Name: "int"
-   181  .  .  .  .  .  .  .  }
-   182  .  .  .  .  .  .  }
-   183  .  .  .  .  .  .  2: *ast.Field {
-   184  .  .  .  .  .  .  .  Type: *ast.Ident {
-   185  .  .  .  .  .  .  .  .  NamePos: test_file.go:35:33
-   186  .  .  .  .  .  .  .  .  Name: "string"
-   187  .  .  .  .  .  .  .  }
-   188  .  .  .  .  .  .  }
-   189  .  .  .  .  .  }
-   190  .  .  .  .  .  Closing: test_file.go:35:39
-   191  .  .  .  .  }
-   192  .  .  .  .  Results: *ast.FieldList {
-   193  .  .  .  .  .  Opening: test_file.go:35:41
-   194  .  .  .  .  .  List: []*ast.Field (len = 2) {
-   195  .  .  .  .  .  .  0: *ast.Field {
-   196  .  .  .  .  .  .  .  Type: *ast.Ident {
-   197  .  .  .  .  .  .  .  .  NamePos: test_file.go:35:42
-   198  .  .  .  .  .  .  .  .  Name: "int32"
+   172  .  .  .  .  .  .  .  Names: []*ast.Ident (len = 1) {
+   173  .  .  .  .  .  .  .  .  0: *ast.Ident {
+   174  .  .  .  .  .  .  .  .  .  NamePos: test_file.go:35:23
+   175  .  .  .  .  .  .  .  .  .  Name: "int1"
+   176  .  .  .  .  .  .  .  .  .  Obj: *ast.Object {
+   177  .  .  .  .  .  .  .  .  .  .  Kind: var
+   178  .  .  .  .  .  .  .  .  .  .  Name: "int1"
+   179  .  .  .  .  .  .  .  .  .  .  Decl: *(obj @ 171)
+   180  .  .  .  .  .  .  .  .  .  }
+   181  .  .  .  .  .  .  .  .  }
+   182  .  .  .  .  .  .  .  }
+   183  .  .  .  .  .  .  .  Type: *ast.Ident {
+   184  .  .  .  .  .  .  .  .  NamePos: test_file.go:35:28
+   185  .  .  .  .  .  .  .  .  Name: "int"
+   186  .  .  .  .  .  .  .  }
+   187  .  .  .  .  .  .  }
+   188  .  .  .  .  .  .  1: *ast.Field {
+   189  .  .  .  .  .  .  .  Names: []*ast.Ident (len = 1) {
+   190  .  .  .  .  .  .  .  .  0: *ast.Ident {
+   191  .  .  .  .  .  .  .  .  .  NamePos: test_file.go:35:33
+   192  .  .  .  .  .  .  .  .  .  Name: "int2"
+   193  .  .  .  .  .  .  .  .  .  Obj: *ast.Object {
+   194  .  .  .  .  .  .  .  .  .  .  Kind: var
+   195  .  .  .  .  .  .  .  .  .  .  Name: "int2"
+   196  .  .  .  .  .  .  .  .  .  .  Decl: *(obj @ 188)
+   197  .  .  .  .  .  .  .  .  .  }
+   198  .  .  .  .  .  .  .  .  }
    199  .  .  .  .  .  .  .  }
-   200  .  .  .  .  .  .  }
-   201  .  .  .  .  .  .  1: *ast.Field {
-   202  .  .  .  .  .  .  .  Type: *ast.Ident {
-   203  .  .  .  .  .  .  .  .  NamePos: test_file.go:35:49
-   204  .  .  .  .  .  .  .  .  Name: "int64"
-   205  .  .  .  .  .  .  .  }
-   206  .  .  .  .  .  .  }
-   207  .  .  .  .  .  }
-   208  .  .  .  .  .  Closing: test_file.go:35:54
-   209  .  .  .  .  }
-   210  .  .  .  }
-   211  .  .  .  Body: *ast.BlockStmt {
-   212  .  .  .  .  Lbrace: test_file.go:35:56
-   213  .  .  .  .  Rbrace: test_file.go:36:1
-   214  .  .  .  }
-   215  .  .  }
-   216  .  }
-   217  .  Scope: *ast.Scope {
-   218  .  .  Objects: map[string]*ast.Object (len = 4) {
-   219  .  .  .  "TestVar": *(obj @ 17)
-   220  .  .  .  "ExportedStruct": *(obj @ 54)
-   221  .  .  .  "ExportedType": *(obj @ 141)
-   222  .  .  .  "ExportedFunction": *(obj @ 160)
-   223  .  .  }
-   224  .  }
-   225  .  Unresolved: []*ast.Ident (len = 9) {
-   226  .  .  0: *(obj @ 78)
-   227  .  .  1: *ast.Ident {
-   228  .  .  .  NamePos: test_file.go:7:16
-   229  .  .  .  Name: "string"
-   230  .  .  }
-   231  .  .  2: *(obj @ 112)
-   232  .  .  3: *(obj @ 148)
-   233  .  .  4: *(obj @ 172)
-   234  .  .  5: *(obj @ 178)
-   235  .  .  6: *(obj @ 184)
-   236  .  .  7: *(obj @ 196)
-   237  .  .  8: *(obj @ 202)
-   238  .  }
-   239  }
-{"Filename":"test_file.go","ExportedFuncs":[{"Name":"ExportedFunction","Params":["int","int","string"],"Returns":["int32","int64"]}]}
+   200  .  .  .  .  .  .  .  Type: *ast.Ident {
+   201  .  .  .  .  .  .  .  .  NamePos: test_file.go:35:38
+   202  .  .  .  .  .  .  .  .  Name: "int"
+   203  .  .  .  .  .  .  .  }
+   204  .  .  .  .  .  .  }
+   205  .  .  .  .  .  .  2: *ast.Field {
+   206  .  .  .  .  .  .  .  Names: []*ast.Ident (len = 1) {
+   207  .  .  .  .  .  .  .  .  0: *ast.Ident {
+   208  .  .  .  .  .  .  .  .  .  NamePos: test_file.go:35:43
+   209  .  .  .  .  .  .  .  .  .  Name: "str1"
+   210  .  .  .  .  .  .  .  .  .  Obj: *ast.Object {
+   211  .  .  .  .  .  .  .  .  .  .  Kind: var
+   212  .  .  .  .  .  .  .  .  .  .  Name: "str1"
+   213  .  .  .  .  .  .  .  .  .  .  Decl: *(obj @ 205)
+   214  .  .  .  .  .  .  .  .  .  }
+   215  .  .  .  .  .  .  .  .  }
+   216  .  .  .  .  .  .  .  }
+   217  .  .  .  .  .  .  .  Type: *ast.Ident {
+   218  .  .  .  .  .  .  .  .  NamePos: test_file.go:35:48
+   219  .  .  .  .  .  .  .  .  Name: "string"
+   220  .  .  .  .  .  .  .  }
+   221  .  .  .  .  .  .  }
+   222  .  .  .  .  .  }
+   223  .  .  .  .  .  Closing: test_file.go:35:54
+   224  .  .  .  .  }
+   225  .  .  .  .  Results: *ast.FieldList {
+   226  .  .  .  .  .  Opening: test_file.go:35:56
+   227  .  .  .  .  .  List: []*ast.Field (len = 2) {
+   228  .  .  .  .  .  .  0: *ast.Field {
+   229  .  .  .  .  .  .  .  Type: *ast.Ident {
+   230  .  .  .  .  .  .  .  .  NamePos: test_file.go:35:57
+   231  .  .  .  .  .  .  .  .  Name: "int32"
+   232  .  .  .  .  .  .  .  }
+   233  .  .  .  .  .  .  }
+   234  .  .  .  .  .  .  1: *ast.Field {
+   235  .  .  .  .  .  .  .  Type: *ast.Ident {
+   236  .  .  .  .  .  .  .  .  NamePos: test_file.go:35:64
+   237  .  .  .  .  .  .  .  .  Name: "int64"
+   238  .  .  .  .  .  .  .  }
+   239  .  .  .  .  .  .  }
+   240  .  .  .  .  .  }
+   241  .  .  .  .  .  Closing: test_file.go:35:69
+   242  .  .  .  .  }
+   243  .  .  .  }
+   244  .  .  .  Body: *ast.BlockStmt {
+   245  .  .  .  .  Lbrace: test_file.go:35:71
+   246  .  .  .  .  Rbrace: test_file.go:36:1
+   247  .  .  .  }
+   248  .  .  }
+   249  .  }
+   250  .  Scope: *ast.Scope {
+   251  .  .  Objects: map[string]*ast.Object (len = 4) {
+   252  .  .  .  "TestVar": *(obj @ 17)
+   253  .  .  .  "ExportedStruct": *(obj @ 54)
+   254  .  .  .  "ExportedType": *(obj @ 141)
+   255  .  .  .  "ExportedFunction": *(obj @ 160)
+   256  .  .  }
+   257  .  }
+   258  .  Unresolved: []*ast.Ident (len = 9) {
+   259  .  .  0: *(obj @ 78)
+   260  .  .  1: *ast.Ident {
+   261  .  .  .  NamePos: test_file.go:7:16
+   262  .  .  .  Name: "string"
+   263  .  .  }
+   264  .  .  2: *(obj @ 112)
+   265  .  .  3: *(obj @ 148)
+   266  .  .  4: *(obj @ 183)
+   267  .  .  5: *(obj @ 200)
+   268  .  .  6: *(obj @ 217)
+   269  .  .  7: *(obj @ 229)
+   270  .  .  8: *(obj @ 235)
+   271  .  }
+   272  }
+{"Filename":"test_file.go","ExportedFuncs":[{"Name":"ExportedFunction","Params":["int","int","string"],"Returns":["int32","int64"]}],"ExportedTypes":[{"TypeName":"ExportedStruct","Struct":{"Fields":[{"Name":"ExportedField","Value":"int"},{"Name":"Nested","Value":"{\"Fields\":[{\"Name\":\"Export\",\"Value\":\"int\"}]}"}]}}]}

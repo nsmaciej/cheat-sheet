@@ -35,9 +35,14 @@ func ParseFile(filename string, read io.Reader) (*File, error) {
 	return file, nil
 }
 
+type Param struct {
+    Name string
+    Type string
+}
+
 type Function struct {
 	Name    string
-	Params  []string
+	Params  []Param
 	Returns []string
 }
 
@@ -46,7 +51,14 @@ func parseFunc(f *ast.FuncDecl) *Function {
 		Name: f.Name.Name,
 	}
 	for _, p := range f.Type.Params.List {
-		fnc.Params = append(fnc.Params, (p.Type.(*ast.Ident)).Name)
+        parm := Param{}
+        if len(p.Names) > 0 {
+            parm.Name = p.Names[0].Name
+        }
+        if n, ok := p.Type.(*ast.Ident); ok {
+            parm.Type = n.Name
+        }
+		fnc.Params = append(fnc.Params, parm)
 	}
 	if f.Type.Results != nil {
 		for _, r := range f.Type.Results.List {

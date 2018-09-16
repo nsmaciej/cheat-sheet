@@ -32,5 +32,5 @@ type ExportedStruct struct {
 
 type ExportedType int
 
-func ExportedFunction(int, int, string) (int32, int64) {
+func ExportedFunction(int1 int, int2 int, str1 string) (int32, int64) {
 }
