@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import ast, json, fileinput
+import ast, json, sys
 
 class FuncLister(ast.NodeVisitor):
 	def visit_FunctionDef(self, node):
@@ -9,7 +9,7 @@ class FuncLister(ast.NodeVisitor):
 		print(json.dumps({'Name':node.name, 'Params':args}, indent=4))
 		self.generic_visit(node) # guarantee child nodes visited
 
-def topLevel(tree, fileName):
+def topLevel(tree, Url, Filename):
 	funcs = []
 	for node in tree.body:
 		args = []
@@ -18,15 +18,15 @@ def topLevel(tree, fileName):
 			for arg in node.args.args:
 				args.append({'Name':arg.arg, 'Type':None})
 				funcs.append({'Name':node.name, 'Params':args})
-	print(json.dumps({'Filename':Filename, 'ExportedFuncs':funcs}, indent=4))
+	print(json.dumps({'Url':Url, 'Filename':Filename, 'ExportedFuncs':funcs, 'ExportedTypes':None}, indent=4))
 
 # FuncLister().visit(tree)
 
-url = input()
-Filename = input()
+Url, Filename = sys.argv[1], sys.argv[2]
+
 s = ''
-for line in fileinput.input():
+for line in sys.stdin:
 	s += line
 
 tree = ast.parse(s)
-topLevel(tree, Filename)
+topLevel(tree, Url, Filename)
