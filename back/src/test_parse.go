@@ -20,7 +20,7 @@ func main() {
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error opening file %s: %v", f, err)
 		}
-		f, err := goparse.ParseFile(f, file)
+		f, err := goparse.ParseFile(file, "", f)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error parsing file %s: %v", f, err)
 		}

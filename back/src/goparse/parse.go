@@ -1,7 +1,6 @@
 package goparse
 
 import (
-	"encoding/json"
 	"go/ast"
 	"go/parser"
 	"go/token"
@@ -13,6 +12,22 @@ type File struct {
 	URL           string
 	ExportedFuncs []*Function
 	ExportedTypes []*TypeStmt
+}
+
+type Param struct {
+	Name string
+	Type string
+}
+
+type Function struct {
+	Name    string
+	Params  []Param
+	Returns []string
+}
+
+type TypeStmt struct {
+	Name    string
+	TypeStr string
 }
 
 func ParseFile(read io.Reader, url string, filename string) (*File, error) {
@@ -36,15 +51,15 @@ func ParseFile(read io.Reader, url string, filename string) (*File, error) {
 	return file, nil
 }
 
-type Param struct {
-	Name string
-	Type string
-}
-
-type Function struct {
-	Name    string
-	Params  []Param
-	Returns []string
+func parseTypeStmt(a *ast.GenDecl) *TypeStmt {
+	if a.Tok != token.TYPE {
+		return nil
+	}
+	spec := a.Specs[0].(*ast.TypeSpec)
+	return &TypeStmt{
+		Name:    spec.Name.Name,
+		TypeStr: parseType(spec.Type),
+	}
 }
 
 func parseFunc(f *ast.FuncDecl) *Function {
@@ -56,86 +71,39 @@ func parseFunc(f *ast.FuncDecl) *Function {
 		if len(p.Names) > 0 {
 			parm.Name = p.Names[0].Name
 		}
-		if n, ok := p.Type.(*ast.Ident); ok {
-			parm.Type = n.Name
-		}
+		parm.Type = parseType(p.Type)
 		fnc.Params = append(fnc.Params, parm)
 	}
 	if f.Type.Results != nil {
 		for _, r := range f.Type.Results.List {
-            if t, ok := r.Type.(*ast.Ident); ok {
-                fnc.Returns = append(fnc.Returns, t.Name)
-            }
+			fnc.Returns = append(fnc.Returns, parseType(r.Type))
 		}
 	}
 	return fnc
 }
 
-type Val struct {
-	Name     string
-	topLevel string
-	nested   *strct
-}
-
-type strct struct {
-	Fields []Val
-}
-
-type TypeStmt struct {
-	TypeName string
-	Struct   *strct
-}
-
-func (v *Val) MarshalJSON() ([]byte, error) {
-	t := struct {
-		Name  string
-		Value string
-	}{}
-	t.Name = v.Name
-	if v.nested == nil {
-		t.Value = v.topLevel
-		return json.Marshal(t)
-	}
-	m, err := json.Marshal(v.nested)
-	if err != nil {
-		return nil, err
-	}
-	t.Value = string(m)
-	return json.Marshal(t)
-}
-
-func parseTypeStmt(f *ast.GenDecl) *TypeStmt {
-	if f.Tok != token.TYPE {
-		return nil
-	}
-	spec := f.Specs[0].(*ast.TypeSpec)
-
-	t := &TypeStmt{
-		TypeName: spec.Name.Name,
-	}
-
-	v, ok := spec.Type.(*ast.StructType)
-	if !ok {
-		return nil
-	}
-	t.Struct = parseStruct(v)
-	return t
-}
-
-func parseStruct(v *ast.StructType) *strct {
-	s := &strct{}
-	for _, f := range v.Fields.List {
-		va := Val{}
-        if len(f.Names) > 0 {
-            va.Name = f.Names[0].Name
-        }
-		switch d := f.Type.(type) {
-		case *ast.StructType:
-			va.nested = parseStruct(d)
-		case *ast.Ident:
-			va.topLevel = d.Name
+func parseType(t ast.Expr) string {
+	switch v := t.(type) {
+	case *ast.Ident:
+		return v.Name
+	case *ast.StarExpr:
+		return "*" + parseType(v.X)
+	case *ast.SliceExpr:
+		return "[]" + parseType(v.X)
+	case *ast.StructType:
+		a := "{"
+		for i, f := range v.Fields.List {
+			if len(f.Names) > 0 {
+				a += f.Names[0].Name + " "
+			}
+			a += parseType(f.Type)
+			if i < len(v.Fields.List)-1 {
+				a += ", "
+			}
 		}
-		s.Fields = append(s.Fields, va)
+		a += "}"
+		return a
+	default:
+		return ""
 	}
-	return s
 }
