@@ -4,20 +4,22 @@ import (
 	"go/ast"
 	"go/parser"
 	"go/token"
+	"io"
 )
 
 type File struct {
+    Filename string
 	ExportedFuncs []*Function
 }
 
-func ParseFile(filename string) (*File, error) {
+func ParseFile(filename string, read io.Reader) (*File, error) {
 	fset := token.NewFileSet()
-	f, err := parser.ParseFile(fset, filename, nil, parser.AllErrors)
+	f, err := parser.ParseFile(fset, filename, read, parser.AllErrors)
 	if err != nil {
 		return nil, err
 	}
 	ast.FileExports(f)
-	file := &File{}
+    file := &File{Filename: filename}
 	for _, decl := range f.Decls {
 		switch d := decl.(type) {
 		case *ast.FuncDecl:
