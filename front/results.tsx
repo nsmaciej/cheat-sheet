@@ -8,6 +8,7 @@ const GridContainer = styled.div`
 
 const RepoName = styled.h2`
     color: red;
+    margin-top: 20px;
     margin-bottom: 20px;
 `
 
@@ -25,6 +26,9 @@ const FileName = styled.div`
 
 const FunctionName = styled.div`
     padding: 7px 0 0;
+    min-width: 0; /* For long names */
+    overflow: hidden;
+    text-overflow: ellipsis;
 `
 
 export class Results extends React.Component<{ repo: string }, { results: any }> {
@@ -40,6 +44,7 @@ export class Results extends React.Component<{ repo: string }, { results: any }>
 
     render() {
         return <>
+            <button onClick={() => window.print()}>Print</button>
             <a href={`https://github.com/${this.props.repo}`}><RepoName>{this.props.repo}</RepoName></a>
             {Object.keys(this.state.results).map(lang => {
                 return <div key={lang}>
@@ -48,20 +53,26 @@ export class Results extends React.Component<{ repo: string }, { results: any }>
                 </div>
             })}
             <h3>.js files</h3>
+            <p>No results</p>
+            <br />
             <h3>.rb files</h3>
+            <p>No results</p>
         </>
     }
 
     renderLanguage(files) {
+        if (!files) return null;
         return files.map(file => {
+            if (!file.ExportedFuncs || file.ExportedFuncs.length == 0) return null;
             return <FileContainer>
-                <FileName>{file.Filename}</FileName>
+                <FileName><a href="#">{file.Filename}</a></FileName>
                 {this.renderFunctions(file.ExportedFuncs)}
             </FileContainer>
         })
     }
 
     renderFunctions(fns) {
+        if (!fns) return null;
         return <>
             <GridContainer>
                 {fns.map(fn => <FunctionName>{fn.Name}()</FunctionName>)}

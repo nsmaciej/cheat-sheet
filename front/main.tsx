@@ -11,16 +11,22 @@ const Logo = styled.img`
     height: 1em;
 `
 
+const NoUnderline = styled.a`
+    text-decoration: none;
+`
+
 const App = () => {
     return <React.Fragment>
-        <h1>
-            <Logo src={kLogoPath} />
-            Cheat Sheets
+        <NoUnderline href="/">
+            <h1>
+                <Logo src={kLogoPath} />
+                Cheat Sheets
             </h1>
+        </NoUnderline>
         <BrowserRouter>
             <>
                 <Route exact path="/" render={() => <Home />} />
-                <Route path="/search/:user/:repo" render={({ match }) => <Results repo={match.params.user + "/" + match.params.repo} /> } />
+                <Route path="/search/:user/:repo" render={({ match }) => <Results repo={match.params.user + "/" + match.params.repo} />} />
             </>
         </BrowserRouter>
     </React.Fragment>
