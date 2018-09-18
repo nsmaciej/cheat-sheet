@@ -21,7 +21,7 @@ const App = () => {
         <NoUnderline href="/">
             <h1>
                 <Logo src={kLogoPath} />
-                Cheat Sheets
+                Cheat Sheet
             </h1>
         </NoUnderline>
         <BrowserRouter>
